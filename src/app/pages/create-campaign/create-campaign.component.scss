@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    justify-content: center;
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 30vh;
+
+        input[type=text], textarea, button {
+            width: 300px;
+            border: 1px solid #cdcdcd;
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 14px;
+            margin: 12px;
+            &:focus {
+                outline: none;
+            }
+        }
+
+     
+        input[type=text] {
+            height: 32px;
+        }
+        textarea {
+            resize: none;
+        }
+        .create-button{
+            height: 34px;
+            user-select: none;
+            &:hover {
+                background-color: rgb(200, 200, 200);
+            }
+        }
+    }
+}

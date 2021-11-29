@@ -1,0 +1,7 @@
+<div class="container">
+    <form [formGroup]="createCampaignForm" (ngSubmit)="saveCampaign()">
+        <input type="text" placeholder="Kampanya Adı" formControlName="name">
+        <textarea cols="30" rows="10" placeholder="Kampanya Açıklaması" formControlName="description"></textarea>
+        <button class="create-button" type="submit">Kaydet</button>
+    </form>
+</div>

@@ -1,0 +1,26 @@
+<app-card>
+    <div class="campaigns-list-item">
+        <div class="campaign-score">
+            {{campaign?.campaign_score}}
+            <span>Puan</span>
+        </div>
+        <div class="campaign-detail">
+            <span class="campaign-name">{{campaign?.name}}</span>
+            <span class="campaign-description">{{campaign?.description}}</span>
+            <div class="campaign-detail-footer">
+                <div class="score-buttons">
+                    <div class="score-button" (click)="clickedPlus(campaign)">
+                        <span>+</span>
+                    </div>
+                    <div class="score-button"  (click)="clickedMinus(campaign)">
+                        <span>-</span>
+                    </div>
+                </div>
+                <div class="other-buttons">
+                    <button (click)="clikedUpdate(campaign)">Güncelle</button>
+                    <button (click)="clikedDelete(campaign)" class="delete">Sil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-card>

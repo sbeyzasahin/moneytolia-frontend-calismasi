@@ -1,0 +1,33 @@
+<div class="campaigns-container">
+    <div class="search-content">
+        <input type="text" placeholder="Lütfen kampanya adını giriniz..." (input)="searchCampaign($event)">
+        <div class="select-box">
+            <select (change)="selectFilterMode($event)">
+                <option [value]="'low'">En düşük puan</option>
+                <option [value]="'higher'">En yüksek puan</option>
+            </select>
+        </div>
+    </div>
+    <div class="campaigns-list">
+        <app-campaign-list-item *ngFor="let campaign of campaigns" [campaign]="campaign"
+            [class.disabled]="!campaign.visible" (onClickedUpdateCampaign)="openUpdateModal($event)"
+            (onClickedPlusMinus)="changeCampaignScore($event)"
+            (onClickedDeleteCampaign)="deleteCampaign($event)"
+            >
+        </app-campaign-list-item>
+    </div>
+</div>
+<div class="modal-container" [class.disabled]="!modalStatus">
+    <div class="modal-content">
+        <div class="close-button" (click)="closeUpdateModal()">
+            <span>
+                X
+            </span>
+        </div>
+        <form [formGroup]="updateForm" (ngSubmit)="updateCampaign()">
+            <input type="text" placeholder="Kampanya Adı" formControlName="name">
+            <textarea cols="30" rows="10" placeholder="Kampanya Açıklaması" formControlName="description"></textarea>
+            <button class="update-button" type="submit">Güncelle</button>
+        </form>
+    </div>
+</div>

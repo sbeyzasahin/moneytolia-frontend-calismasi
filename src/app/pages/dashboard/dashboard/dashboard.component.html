@@ -1,0 +1,22 @@
+<div class="container">
+        <div class="left-content">
+            <div class="sidebar-container">
+                <div class="sidebar-header">
+                    <img class="logo" src="assets/images/moneytolia.png">
+                </div>
+                <div class="sidebar-list">
+                    <div class="sidebar-list-item" *ngFor="let item of list">
+                        <a [routerLink]="[item.path]">{{item.name}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-content">
+            <div class="header">
+                <h2>Moneytolia</h2>
+            </div>
+            <div class="main">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+</div>

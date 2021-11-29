@@ -1,0 +1,18 @@
+<div class="login-content">
+    <form [formGroup]="loginForm" (ngSubmit)="formSubmit()">
+        <label>
+            <input type="text" formControlName="username" placeholder="username">
+            <span class="error-message"
+                *ngIf="!userNameFormControl.valid && userNameFormControl.touched">Username
+                is empty!</span>
+        </label>
+        <label>
+            <input type="password" formControlName="password" placeholder="password">
+            <span class="error-message"
+                *ngIf="!passwordFormControl.valid && passwordFormControl.touched ">Password
+                is empty!</span>
+        </label>
+        <button type="submit" [disabled]="!loginForm.valid">Giriş</button>
+        <p class="error-message" [class.disabled]="!loginForm.getError('error')">Username or password is wrong!</p>
+    </form>
+</div>
