@@ -1,5 +1,7 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/interfaces/user';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,9 @@ import { User } from 'src/app/interfaces/user';
 export class AuthService {
 
   private user!: User;
-  constructor() { }
+  constructor(private localStorageService:LocalStorageService) { }
+
+
 
   setUser(user: User) {
     this.user = user
@@ -21,11 +25,11 @@ export class AuthService {
   }
 
   public setAuthenticated(val: boolean) {
-    localStorage.setItem('isAuthenticated', val.toString());
+    this.localStorageService.setLocalStorageItem('isAuthenticated', val.toString());
   }
 
   public isAuthenticated(): boolean {
-    const res = localStorage.getItem('isAuthenticated') || 'false';
+    const res = this.localStorageService.getLocalStorageItem('isAuthenticated') || 'false';
     return res === 'true';
   }
 

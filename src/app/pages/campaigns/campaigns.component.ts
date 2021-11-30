@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Campaign } from 'src/app/interfaces/campaign';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-campaigns',
@@ -23,7 +24,7 @@ export class CampaignsComponent implements OnInit {
     description: this.campaign_description
   })
 
-  constructor() { }
+  constructor(private localStorageService: LocalStorageService) { }
 
   ngOnInit(): void {
 
@@ -31,9 +32,9 @@ export class CampaignsComponent implements OnInit {
   }
 
   createCampaignList() {
-    const localStorageCampaings = localStorage.getItem('campaigns') || '[]';
+    const localStorageCampaings = this.localStorageService.getLocalStorageItem('campaigns') || [];
 
-    this.campaigns = JSON.parse(localStorageCampaings);
+    this.campaigns = localStorageCampaings;
 
     let count = 1;
 
@@ -43,8 +44,8 @@ export class CampaignsComponent implements OnInit {
     })
 
     this.campaigns.sort((a, b) => {
-      let firstScore = a.campaign_score;
-      let secondScore = b.campaign_score;
+      const firstScore = a.campaign_score;
+      const secondScore = b.campaign_score;
       if (firstScore < secondScore) return -1;
       if (firstScore > secondScore) return 1;
       return 0;
@@ -73,13 +74,16 @@ export class CampaignsComponent implements OnInit {
 
   updateCampaign() {
 
-    const findIndexCampaign = this.campaigns.findIndex((campaign) => campaign.id === this.campaign_id.value as any);
+    const index = this.campaigns.findIndex((campaign) => campaign.id === this.campaign_id.value as any);
 
-    const newCampaigns = this.campaigns.concat();
+    const newCampaigns = [...this.campaigns];
 
-    newCampaigns[findIndexCampaign].name = this.campaign_name.value
-    newCampaigns[findIndexCampaign].description = this.campaign_description.value
-
+    const currentCampain = newCampaigns[index];
+    newCampaigns[index] = {
+      ...currentCampain,
+      name: this.campaign_name.value,
+      description: this.campaign_description.value,
+    }
     this.campaigns = newCampaigns;
 
     this.updateLocalStorage();
@@ -87,19 +91,21 @@ export class CampaignsComponent implements OnInit {
     this.modalStatus = false;
   }
 
-  changeCampaignScore(value: { campaign: Campaign, score: number }) {
+  changeCampaignScore(campaign: Campaign, score: number) {
 
-    const { campaign, score } = value;
+    const index = this.campaigns.findIndex((orjCampaign) => orjCampaign.id === campaign.id as any);
 
-    const findIndexCampaign = this.campaigns.findIndex((orCampaign) => orCampaign.id === campaign.id as any);
+    const newCampaigns = [...this.campaigns];
 
-    const newCampaigns = this.campaigns.concat();
+    const currentCampain = newCampaigns[index];
 
+    const total = currentCampain.campaign_score + score
 
-    newCampaigns[findIndexCampaign].campaign_score += score
+    if (total < 0) { return }
 
-    if (newCampaigns[findIndexCampaign].campaign_score < 0) {
-      newCampaigns[findIndexCampaign].campaign_score = 0
+    newCampaigns[index] = {
+      ...currentCampain,
+      campaign_score: total
     }
 
     this.campaigns = newCampaigns;
@@ -107,13 +113,13 @@ export class CampaignsComponent implements OnInit {
     this.updateLocalStorage();
   }
 
-  deleteCampaign(campaign: Campaign | null) {
+  deleteCampaign(campaign: Campaign) {
 
-    const findIndexCampaign = this.campaigns.findIndex((orCampaign) => orCampaign.id === campaign?.id as any);
+    const index = this.campaigns.findIndex((c) => c.id === campaign.id);
 
-    const newCampaigns = this.campaigns.concat();
+    const newCampaigns = [...this.campaigns];
 
-    newCampaigns.splice(findIndexCampaign, 1);
+    newCampaigns.splice(index, 1)
 
     this.campaigns = newCampaigns;
 
@@ -129,7 +135,7 @@ export class CampaignsComponent implements OnInit {
         campaign_score: campaign.campaign_score
       }
     })
-    localStorage.setItem('campaigns', JSON.stringify(campaigns));
+    this.localStorageService.setLocalStorageItem('campaigns', campaigns);
   }
 
   selectFilterMode(event: any) {

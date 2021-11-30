@@ -6,42 +6,12 @@ import { LoginComponent } from './pages/login/login.component';
 import { CampaignsComponent } from './pages/campaigns/campaigns.component';
 import { CreateCampaignComponent } from './pages/create-campaign/create-campaign.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService } from './services/auth-service/auth.service';
+import { AuthService } from './services/auth/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './pages/dashboard/dashboard/dashboard.component';
 import { CardComponent } from './components/card/card.component';
 import { CampaignListItemComponent } from './pages/campaign-list-item/campaign-list-item.component';
-
-
-localStorage.setItem('user', JSON.stringify({ username: 'ayse', password: '1234' }));
-if(localStorage.getItem('campaigns') === null ) {
-  localStorage.setItem('campaigns', JSON.stringify([
-    {
-      name: 'Kampanya 1',
-      description: '%30 İndirim',
-      created_date: new Date(),
-      campaign_score: 0
-    },
-    {
-      name: 'Kampanya 2',
-      description: '%50 İndirim + %10 İndirim',
-      created_date: new Date(),
-      campaign_score: 0
-    },
-    {
-      name: 'Kampanya 3',
-      description: '%70 İndirim',
-      created_date: new Date(),
-      campaign_score: 0
-    },
-    {
-      name: 'Kampanya 4',
-      description: '%10 İndirim',
-      created_date: new Date(),
-      campaign_score: 0
-    },
-  ]));
-}
+import { LocalStorageService } from './services/local-storage/local-storage.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +29,7 @@ if(localStorage.getItem('campaigns') === null ) {
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

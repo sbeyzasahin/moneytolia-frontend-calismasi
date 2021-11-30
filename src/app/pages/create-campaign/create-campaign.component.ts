@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-create-campaign',
@@ -10,7 +11,7 @@ export class CreateCampaignComponent implements OnInit {
 
   // Çalışma pdfinde kampanya adı ve kampanya açıklaması zorunludur (boş bırakılamaz) ibaresi olmadığından,
   // FormControllerinde Validator kullanmadım.
-  
+
   campaign_name = new FormControl();
   campaign_description = new FormControl();
   createCampaignForm = new FormGroup({
@@ -18,16 +19,16 @@ export class CreateCampaignComponent implements OnInit {
     description: this.campaign_description
   });
 
-  constructor() { }
+  constructor(private localStorageService: LocalStorageService) { }
 
   ngOnInit(): void {
   }
 
   saveCampaign() {
 
-    const localStorageCampaings = localStorage.getItem('campaigns') || '[]';
+    const localStorageCampaings = this.localStorageService.getLocalStorageItem('campaigns') || [];
 
-    const campaigns = JSON.parse(localStorageCampaings);
+    const campaigns = localStorageCampaings;
 
     const campaign = {
       name: this.campaign_name.value,
@@ -38,6 +39,6 @@ export class CreateCampaignComponent implements OnInit {
 
     campaigns.push(campaign);
 
-    localStorage.setItem('campaigns', JSON.stringify(campaigns));
+    this.localStorageService.setLocalStorageItem('campaigns', campaigns);
   }
 }

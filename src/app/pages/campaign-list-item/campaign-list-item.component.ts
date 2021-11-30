@@ -12,7 +12,7 @@ export class CampaignListItemComponent implements OnInit {
 
   @Output() onClickedUpdateCampaign: EventEmitter<Campaign | null> = new EventEmitter();
   @Output() onClickedDeleteCampaign: EventEmitter<Campaign | null> = new EventEmitter();
-  @Output() onClickedPlusMinus: EventEmitter<{campaign: Campaign, score: number}> = new EventEmitter();
+  @Output() onClickedPlusMinus: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
@@ -27,10 +27,10 @@ export class CampaignListItemComponent implements OnInit {
     this.onClickedDeleteCampaign.emit(campaign);
   }
 
-  clickedPlus(campaign: Campaign | null) {
-    this.onClickedPlusMinus.emit({campaign: campaign as Campaign, score: 1});
+  clickedPlus() {
+    this.onClickedPlusMinus.emit(1);
   }
-  clickedMinus(campaign: Campaign | null) {
-    this.onClickedPlusMinus.emit({campaign: campaign as Campaign, score: -1});
+  clickedMinus() {
+    this.onClickedPlusMinus.emit(-1);
   }
 }
